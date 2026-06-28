@@ -46,9 +46,33 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Health Check Endpoint
+// 1. Root Route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Community Hero Backend is Running 🚀",
+    version: "1.0.0",
+    environment: process.env.NODE_ENV || "development"
+  });
+});
+
+// 2. Health Check Route
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'healthy', timestamp: new Date() });
+  res.status(200).json({
+    success: true,
+    status: "healthy",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 3. API Health Check Route
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    api: "Community Hero API",
+    status: "Running"
+  });
 });
 
 // Mounting Routing Modules
@@ -57,8 +81,25 @@ app.use('/api/issues', issueRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/dashboards', dashboardRoutes);
 
+// 4. 404 Fallback for unmatched routes
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    error: `Path not found: ${req.originalUrl}`
+  });
+});
+
 // Global Error Handler Middleware
 app.use(errorHandler);
+
+// Process-level crash protectors (Unhandled exceptions/rejections)
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+});
 
 // Start Server
 app.listen(PORT, () => {
