@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans antialiased bg-background-light text-neutral-900 transition-colors duration-300;
+  }
+
+  body.dark {
+    @apply bg-background text-neutral-50;
+  }
+  
+  /* Scrollbar Customization */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 dark:bg-neutral-700 rounded-full transition-colors duration-200;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-400 dark:bg-neutral-600;
+  }
+}
+
+@layer components {
+  /* Premium Glassmorphic Classes */
+  .glass {
+    @apply bg-white/70 dark:bg-neutral-900/60 backdrop-blur-md border border-white/20 dark:border-neutral-800/40 shadow-glass-light dark:shadow-glass-dark;
+  }
+
+  .glass-card {
+    @apply bg-white/60 dark:bg-surface/50 backdrop-blur-lg border border-white/30 dark:border-neutral-800/40 rounded-2xl shadow-glass-light dark:shadow-glass-dark hover:shadow-m3-elevation-2 transition-all duration-300;
+  }
+
+  .glass-panel {
+    @apply bg-white/80 dark:bg-surface/80 backdrop-blur-xl border border-white/20 dark:border-neutral-800/50 shadow-glass-light dark:shadow-glass-dark;
+  }
+
+  .glass-input {
+    @apply w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-neutral-950/40 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200;
+  }
+
+  .glass-btn-primary {
+    @apply px-6 py-3 rounded-xl bg-primary hover:bg-primary-light text-white font-medium shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2;
+  }
+
+  .glass-btn-secondary {
+    @apply px-6 py-3 rounded-xl bg-white/40 dark:bg-neutral-900/40 text-neutral-800 dark:text-neutral-200 font-medium border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2;
+  }
+
+  /* Shimmer / Skeleton effects */
+  .shimmer {
+    @apply relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-neutral-200/50 dark:before:via-neutral-800/50 before:to-transparent bg-neutral-100 dark:bg-neutral-900;
+  }
+}
+
+/* Custom leaflet/maps sizing, or general responsive styles */
+.map-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Material Design Fab (Floating Action Button) */
+.m3-fab {
+  @apply fixed bottom-6 right-6 p-4 bg-tertiary text-white rounded-2xl shadow-m3-elevation-3 hover:shadow-2xl active:scale-95 transition-all duration-200 z-50 flex items-center justify-center;
+}

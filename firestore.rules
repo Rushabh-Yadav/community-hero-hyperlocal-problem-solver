@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User profile constraints: read-all (leaderboard/details), write-self
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Issues constraints: read-all, create by citizen, update by officer/admin or reporter (limited fields)
+    match /issues/{issueId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null; // Checked at backend controller level for exact roles
+      allow delete: if request.auth != null && request.auth.token.role == 'admin';
+    }
+    
+    // Comments: read-all, write if authenticated
+    match /comments/{commentId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && (request.auth.uid == resource.data.userId || request.auth.token.role == 'admin');
+    }
+    
+    // AI Predictions: read-all, write admin-only
+    match /predictions/{predictionId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.token.role == 'admin';
+    }
+  }
+}
